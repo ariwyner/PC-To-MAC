@@ -1,0 +1,56 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Apr 25 14:27:18 2021
+Primary data source
+https://www.kaggle.com/fedesoriano/stroke-prediction-dataset
+@author: ARI
+"""
+#%% imports
+import os
+import pandas as pd
+
+
+#%% read data
+
+input_folder = '/home/kali/IMports/reddit_aiml'
+
+# list of files
+file_list = os.listdir(input_folder)
+
+
+# empty list to store dataframes
+df_list = []
+
+#%% read in dataframes
+for file in file_list:
+    print("loading", file)
+    # lazy way
+    # temp_df = pd.read_csv(input_folder + file)
+    
+    # fancy way
+    temp_df = pd.read_csv(os.path.join(input_folder, file))
+    
+    # add the dataframe to the list
+    df_list.append(temp_df)
+
+
+#%% join together
+# join them together
+# https://stackoverflow.com/questions/32444138/concatenate-a-list-of-pandas-dataframes-together
+
+aiml_data = pd.concat(df_list)
+
+
+
+#%% create small sample
+#aiml_data = aiml_data.sample(100)
+#%% Assignment 1, find which subredit is most popular, top 5
+# get top 5 most frequent names
+#https://stackoverflow.com/questions/48590268/pandas-get-the-most-frequent-values-of-a-column/48590361
+# IT IS NEVER REQUESTED IN INSTRUCTIONS WE LIST NUMBER OF POSTS PER SUBREDDIT, JUST THE TOP 5 MOST POSTED
+top_5MP = aiml_data['subreddit'].value_counts().keys()[0:5]
+print(top_5MP)
+#%% Assignment 2, find which user posts the most
+top_5UP = aiml_data['author'].value_counts().keys()[0:5]
+print(top_5UP)
